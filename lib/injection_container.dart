@@ -1,26 +1,46 @@
-import 'package:shopping_cart/domain/repositories/cart_repository.dart';
-
-import 'core/network/api_client.dart';
 import 'package:http/http.dart' as http;
-import 'domain/repositories/product_repository.dart';
-import 'domain/use_cases/get_products.dart';
-import 'domain/use_cases/get_single_product.dart';
-import 'domain/use_cases/send_product_to_cart.dart';
-import 'infraestructure/datasources/products_remote_data_source.dart';
-import 'infraestructure/repositories/product_repositories.dart';
+import '../core/network/api_client.dart';
+import '../domain/repositories/cart_repository.dart';
+import '../domain/repositories/product_repository.dart';
+import '../domain/use_cases/get_products.dart';
+import '../domain/use_cases/get_single_product.dart';
+import '../domain/use_cases/send_product_to_cart.dart';
+import '../infraestructure/datasources/products_remote_data_source.dart';
+import '../infraestructure/repositories/product_repositories.dart';
 
-final ApiClient apiClient = ApiClient(http.Client());
+class InjectionContainer {
+  static final InjectionContainer _instance = InjectionContainer._internal();
 
-ProductsRemoteDataSource productRemoteDataSource =
-    ProductsRemoteDataSourceImpl(apiClient);
+  factory InjectionContainer() {
+    return _instance;
+  }
 
-ProductsRepository productRepository =
-    ProductsRepositories(productRemoteDataSource);
+  InjectionContainer._internal();
 
-CartRepository cartRepository = ProductsRepositories(productRemoteDataSource);
+  static InjectionContainer get instance => _instance;
 
-GetProducts getProducts = GetProducts(productRepository);
+  late ProductsRemoteDataSource _productsRemoteDataSource;
+  late ProductsRepository _productsRepository;
+  late CartRepository _cartRepository;
 
-GetSingleProduct getSingleProduct = GetSingleProduct(productRepository);
+  late GetProducts _getProducts;
+  late GetSingleProduct _getSingleProduct;
+  late SendProductToCart _sendProductToCart;
 
-SendProductToCart sendProductToCart = SendProductToCart(cartRepository);
+  void init() {
+    final apiClient = ApiClient(http.Client());
+
+    _productsRemoteDataSource = ProductsRemoteDataSourceImpl(apiClient);
+
+    _productsRepository = ProductsRepositories(_productsRemoteDataSource);
+    _cartRepository = ProductsRepositories(_productsRemoteDataSource);
+
+    _getProducts = GetProducts(_productsRepository);
+    _getSingleProduct = GetSingleProduct(_productsRepository);
+    _sendProductToCart = SendProductToCart(_cartRepository);
+  }
+
+  GetProducts get getProducts => _getProducts;
+  GetSingleProduct get getSingleProduct => _getSingleProduct;
+  SendProductToCart get sendProductToCart => _sendProductToCart;
+}

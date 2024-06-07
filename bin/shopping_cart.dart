@@ -12,13 +12,18 @@ final cart = CartModel(
 );
 
 void main(List<String> arguments) async {
+  await initializeDependencies();
   await fetchProducts();
   await fetchSingleProduct(productId);
   await sendProductToCart(cart);
 }
 
+Future<void> initializeDependencies() async {
+  di.InjectionContainer.instance.init();
+}
+
 Future<void> fetchProducts() async {
-  final getProducts = di.getProducts;
+  final getProducts = di.InjectionContainer.instance.getProducts;
 
   final result = await getProducts.call();
 
@@ -43,7 +48,7 @@ Future<void> fetchProducts() async {
 }
 
 Future<void> fetchSingleProduct(int productId) async {
-  final getSingleProduct = di.getSingleProduct;
+  final getSingleProduct = di.InjectionContainer.instance.getSingleProduct;
 
   final result = await getSingleProduct.call(productId);
 
@@ -66,7 +71,7 @@ Future<void> fetchSingleProduct(int productId) async {
 }
 
 Future<void> sendProductToCart(CartModel cart) async {
-  final sendProduct = di.sendProductToCart;
+  final sendProduct = di.InjectionContainer.instance.sendProductToCart;
 
   final result = await sendProduct.call(cart);
 
