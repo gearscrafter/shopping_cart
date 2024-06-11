@@ -1,6 +1,6 @@
 import 'package:shopping_cart/application/shopping_cart_application.dart';
 import 'package:shopping_cart/infraestructure/models/cart_model.dart';
-import 'package:shopping_cart/injection_container.dart' as di;
+import 'package:shopping_cart/injection_container.dart' as dependency_injection;
 
 const int productId = 1;
 
@@ -13,11 +13,9 @@ final cart = CartModel(
 );
 
 void main(List<String> arguments) async {
-  di.InjectionContainer.instance.init();
+  dependency_injection.Container.instance.init();
   final shoppingCartApp = ShoppingCartApplication(
-    di.InjectionContainer.instance.getProducts,
-    di.InjectionContainer.instance.getSingleProduct,
-    di.InjectionContainer.instance.sendProductToCart,
+    dependency_injection.Container.instance.usecase,
   );
 
   await shoppingCartApp.fetchProducts();

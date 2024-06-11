@@ -1,20 +1,14 @@
-import 'package:shopping_cart/domain/entities/cart_entity.dart';
-import 'package:shopping_cart/domain/entities/product_entity.dart';
-import 'package:shopping_cart/domain/use_cases/get_products.dart';
-import 'package:shopping_cart/domain/use_cases/get_single_product.dart';
-
-import '../domain/use_cases/send_product_to_cart.dart';
+import '../domain/entities/cart_entity.dart';
+import '../domain/entities/product_entity.dart';
+import '../domain/use_cases/products.dart';
 
 class ShoppingCartApplication {
-  final SendProductToCart sendProduct;
-  final GetProducts getProducts;
-  final GetSingleProduct getSingleProduct;
+  final Products usecase;
 
-  ShoppingCartApplication(
-      this.getProducts, this.getSingleProduct, this.sendProduct);
+  ShoppingCartApplication(this.usecase);
 
   Future<void> fetchProducts() async {
-    final result = await getProducts();
+    final result = await usecase.callProducts();
 
     result.fold(
       (failure) => print('Error al obtener los productos: ${failure.message}'),
@@ -28,7 +22,7 @@ class ShoppingCartApplication {
   }
 
   Future<void> fetchSingleProduct(int productId) async {
-    final result = await getSingleProduct(productId);
+    final result = await usecase.callSingleProduct(productId);
 
     result.fold(
       (failure) => print('Error al obtener el producto: ${failure.message}'),
@@ -40,7 +34,7 @@ class ShoppingCartApplication {
   }
 
   Future<void> sendProductToCart(CartEntity cart) async {
-    final result = await sendProduct(cart);
+    final result = await usecase.callSendProduct(cart);
 
     result.fold(
       (failure) => print(
