@@ -1,8 +1,8 @@
 import 'package:dartz/dartz.dart';
 
 import '../../core/errors/failures.dart';
-import '../../infraestructure/models/cart_model.dart';
+import '../entities/cart_entity.dart';
 
 abstract class CartRepository {
-  Future<Either<Failure, CartModel>> sendProductToCart(CartModel cart);
+  Future<Either<Failure, CartEntity>> sendProductToCart(CartEntity cart);
 }

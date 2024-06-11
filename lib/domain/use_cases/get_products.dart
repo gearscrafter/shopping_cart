@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 
 import '../../../core/errors/failures.dart';
-import '../../infraestructure/models/product_model.dart';
+import '../entities/product_entity.dart';
 import '../repositories/product_repository.dart';
 
 class GetProducts {
@@ -9,7 +9,7 @@ class GetProducts {
 
   GetProducts(this.repository);
 
-  Future<Either<Failure, List<ProductModel>>> call() async {
+  Future<Either<Failure, List<ProductEntity>>> call() async {
     return await repository.getProducts();
   }
 }

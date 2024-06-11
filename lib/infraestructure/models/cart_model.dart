@@ -1,3 +1,5 @@
+// La clase `CartModel` extiende la clase `CartEntity` del dominio y representa un modelo de carrito en el contexto del paquete.
+
 import '../../domain/entities/cart_entity.dart';
 
 class CartModel extends CartEntity {
@@ -12,7 +14,7 @@ class CartModel extends CartEntity {
     return CartModel(
       id: json['id'],
       userId: json['userId'],
-      date: DateTime.parse(json['date']),
+      date: (json['date'] is String) ? DateTime.now() : json['date'],
       products: (json['products'] as List)
           .map((item) => ProductQuantityModel.fromJson(item))
           .toList(),
@@ -28,6 +30,7 @@ class CartModel extends CartEntity {
   }
 }
 
+/// La clase `ProductQuantityModel` extiende la clase `ProductQuantityEntity` del dominio y representa un modelo de cantidad de producto en el contexto del paquete.
 class ProductQuantityModel extends ProductQuantityEntity {
   ProductQuantityModel({
     required super.productId,
@@ -41,6 +44,7 @@ class ProductQuantityModel extends ProductQuantityEntity {
     );
   }
 
+  /// Convierte el objeto `ProductQuantityModel` en un mapa JSON.
   @override
   Map<String, dynamic> toJson() {
     return {

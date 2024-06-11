@@ -2,7 +2,6 @@ import 'package:shopping_cart/domain/entities/cart_entity.dart';
 import 'package:shopping_cart/domain/entities/product_entity.dart';
 import 'package:shopping_cart/domain/use_cases/get_products.dart';
 import 'package:shopping_cart/domain/use_cases/get_single_product.dart';
-import 'package:shopping_cart/infraestructure/models/cart_model.dart';
 
 import '../domain/use_cases/send_product_to_cart.dart';
 
@@ -41,13 +40,7 @@ class ShoppingCartApplication {
   }
 
   Future<void> sendProductToCart(CartEntity cart) async {
-    final cartProducts = <ProductQuantityModel>[];
-    for (var product in cart.products) {
-      cartProducts.add(ProductQuantityModel(
-          productId: product.productId, quantity: product.quantity));
-    }
-    final result = await sendProduct(CartModel(
-        userId: cart.userId, date: cart.date, products: cartProducts));
+    final result = await sendProduct(cart);
 
     result.fold(
       (failure) => print(

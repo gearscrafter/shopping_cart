@@ -2,11 +2,11 @@ import 'package:dartz/dartz.dart';
 
 import '../../core/errors/exceptions.dart';
 import '../../core/errors/failures.dart';
+import '../../domain/entities/cart_entity.dart';
+import '../../domain/entities/product_entity.dart';
 import '../../domain/repositories/cart_repository.dart';
 import '../../domain/repositories/product_repository.dart';
 import '../datasources/products_remote_data_source.dart';
-import '../models/cart_model.dart';
-import '../models/product_model.dart';
 
 class ProductsRepositories implements CartRepository, ProductsRepository {
   final ProductsRemoteDataSource remoteDataSource;
@@ -14,7 +14,7 @@ class ProductsRepositories implements CartRepository, ProductsRepository {
   ProductsRepositories(this.remoteDataSource);
 
   @override
-  Future<Either<Failure, CartModel>> sendProductToCart(CartModel cart) async {
+  Future<Either<Failure, CartEntity>> sendProductToCart(CartEntity cart) async {
     try {
       final products = await remoteDataSource.sendProductToCart(cart);
       return Right(products);
@@ -30,7 +30,7 @@ class ProductsRepositories implements CartRepository, ProductsRepository {
   }
 
   @override
-  Future<Either<Failure, List<ProductModel>>> getProducts() async {
+  Future<Either<Failure, List<ProductEntity>>> getProducts() async {
     try {
       final products = await remoteDataSource.getProducts();
       return Right(products);
@@ -46,7 +46,7 @@ class ProductsRepositories implements CartRepository, ProductsRepository {
   }
 
   @override
-  Future<Either<Failure, ProductModel>> getSingleProduct(int productId) async {
+  Future<Either<Failure, ProductEntity>> getSingleProduct(int productId) async {
     try {
       final product = await remoteDataSource.getSingleProduct(productId);
       return Right(product);

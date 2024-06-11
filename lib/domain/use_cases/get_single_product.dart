@@ -1,5 +1,5 @@
 import 'package:dartz/dartz.dart';
-import '../../infraestructure/models/product_model.dart';
+import '../entities/product_entity.dart';
 import '../repositories/product_repository.dart';
 import '../../../core/errors/failures.dart';
 
@@ -8,7 +8,7 @@ class GetSingleProduct {
 
   GetSingleProduct(this.repository);
 
-  Future<Either<Failure, ProductModel>> call(int productId) async {
+  Future<Either<Failure, ProductEntity>> call(int productId) async {
     return await repository.getSingleProduct(productId);
   }
 }
